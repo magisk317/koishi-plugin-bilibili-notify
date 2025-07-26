@@ -587,9 +587,15 @@ class ComRegister {
 			(bot) => bot.platform === config.master.platform,
 		);
 		if (!this.privateBot) {
+			this.logger.warn("未找到对应的私人机器人实例，将无法向您推送机器人状态！");
 			this.ctx.notifier.create({
 				content: "您未配置私人机器人，将无法向您推送机器人状态！",
 			});
+		} else {
+			// 检查机器人状态
+			if (this.privateBot.status !== Universal.Status.ONLINE) {
+				this.logger.warn(`私人机器人状态异常: ${this.privateBot.status}`);
+			}
 		}
 		// 检查登录数据库是否有数据
 		this.loginDBData = (
@@ -778,20 +784,24 @@ class ComRegister {
 	}
 
 	async sendPrivateMsg(content: string) {
-		if (this.config.master.enable) {
-			if (this.config.master.masterAccountGuildId) {
-				// 向机器人主人发送消息
-				await this.privateBot.sendPrivateMessage(
-					this.config.master.masterAccount,
-					content,
-					this.config.master.masterAccountGuildId,
-				);
-			} else {
-				// 向机器人主人发送消息
-				await this.privateBot.sendPrivateMessage(
-					this.config.master.masterAccount,
-					content,
-				);
+		if (this.config.master.enable && this.privateBot) {
+			try {
+				if (this.config.master.masterAccountGuildId) {
+					// 向机器人主人发送消息
+					await this.privateBot.sendPrivateMessage(
+						this.config.master.masterAccount,
+						content,
+						this.config.master.masterAccountGuildId,
+					);
+				} else {
+					// 向机器人主人发送消息
+					await this.privateBot.sendPrivateMessage(
+						this.config.master.masterAccount,
+						content,
+					);
+				}
+			} catch (error) {
+				this.logger.error(`发送私聊消息失败: ${error.message}`);
 			}
 		}
 	}
