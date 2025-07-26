@@ -1,7 +1,7 @@
 {
-  "name": "koishi-plugin-bilibili-notify",
+  "name": "koishi-plugin-bilibili-notify-fork",
   "description": "Koishi bilibili notify plugin",
-  "version": "3.3.3",
+  "version": "3.3.4",
   "main": "./lib/index.js",
   "typings": "lib/index.d.ts",
   "files": [
@@ -12,7 +12,7 @@
     "Akokko <admin@akokko.com>"
   ],
   "license": "MIT",
-  "homepage": "https://www.npmjs.com/package/koishi-plugin-bilibili-notify",
+  "homepage": "https://www.npmjs.com/package/koishi-plugin-bilibili-notify-fork",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Akokk0/koishi-plugin-bilibili-notify"
